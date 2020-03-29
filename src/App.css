@@ -37,10 +37,6 @@ body{
     align-items: center;
     font-size: calc(10px + 2vmin);
 }
-.App-container__background {
-    zoom: 43%;
-    margin-top: -455px;
-}
 .App-container__background-wrapper{
     overflow: hidden;
     width: 1080px;

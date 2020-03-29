@@ -8,15 +8,15 @@ class MenuPositionLeft extends React.Component {
         super(props);
         this.handleMouseHover = this.handleMouseHover.bind(this);
         this.handleMouseUnHover = this.handleMouseUnHover.bind(this);
-        let selectedOption = null;
+        let selectedOptions = {};
         props.options.forEach(item => {
             if (item.active) {
-                selectedOption = item.value;
+                selectedOptions[item.id] = item;
             }
         })
         this.state = {
             count: 1,
-            selectedOption: selectedOption,
+            selectedOptions: selectedOptions,
             isHovering: false,
         };
     }
@@ -38,10 +38,31 @@ class MenuPositionLeft extends React.Component {
         this.setState({isHovering: false});
     }
 
+    getGroupedOptions() {
+        let groups = [];
+        this.props.options.forEach(  (optionValue) => {
+            if (!groups[optionValue.option_id]) {
+                let group = {"options": [], "name": ""};
+                this.props.optionGroups.forEach((optionGroupItem) => {
+                    if (optionGroupItem.id === optionValue.option_id) {
+                        group.name = optionGroupItem.name;
+                    }
+                })
+                groups[optionValue.option_id] = group;
+            }
+
+            groups[optionValue.option_id].options.push(optionValue);
+        })
+        return groups;
+    }
+
     render() {
-        let selectOption = (e, v) => {
-            this.setState((state, props) => ({selectedOption: v}));
+        let onOptionSelect =  (e, id, v) => {
+            let options = this.state.selectedOptions;
+            options[id] = v;
+            this.setState((state, props) => ({selectedOptions: options}));
         }
+
         let imageClassName = 'menu-position-left__image ' + (this.props.reflected ? 'reflected' : '');
         let positionClassName = 'menu-position-left'
             + (this.props.reflected ? ' reflected' : '')
@@ -55,9 +76,13 @@ class MenuPositionLeft extends React.Component {
                          onMouseLeave={this.handleMouseUnHover}>
                         <div className="menu-position-left__info_column__name">{this.props.name}</div>
                         <div className="menu-position-left__info_column__description">{this.props.description}</div>
-                        <OptionSelector options={this.props.options}
-                                        selectedOption={this.state.selectedOption}
-                                        onSelect={selectOption}/>
+                        {this.getGroupedOptions().map((optionGroup) => {
+                            return <OptionSelector optionGroup={optionGroup}
+                                                   key={optionGroup.name}
+                                                   selectedOption={this.state.selectedOption}
+                                                   onSelect={onOptionSelect}/>
+
+                        })}
                         <div className="menu-position-left__info_column__purchase">
                             <Button onClick={this.addToCart} text="Add"/>
                         </div>

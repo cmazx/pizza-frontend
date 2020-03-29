@@ -10,20 +10,21 @@ class OptionSelector extends React.Component {
         };
     }
 
-    onSelect(e, value) {
-        this.setState((state, props) => ({selectedOption: value}));
-        this.props.onSelect(e,value);
+    onSelect(e, item) {
+        this.setState((state, props) => ({selectedOption: item.value}));
+        this.props.onSelect(e, item.option_id, item.value);
     }
 
     render() {
         return (
             <div className="option-selector">
-                {this.props.options.map(item => (
-                    <div onClick={(e) => this.onSelect(e, item.value)} className={
-                        (this.state.selectedOption === item.value)
+                <div className="option-selector__name">{this.props.optionGroup.name}</div>
+                {this.props.optionGroup.options.map(optionValue => (
+                    <div onClick={(e) => this.onSelect(e, optionValue)} className={
+                        (this.state.selectedOption === optionValue.value)
                             ? 'option-selector__value active_selector'
                             : 'option-selector__value'
-                    } key={item.value}>{item.value}</div>
+                    } key={optionValue.value}>{optionValue.value}</div>
                 ))}
             </div>
         );

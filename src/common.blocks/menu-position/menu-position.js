@@ -8,15 +8,15 @@ class MenuPosition extends React.Component {
         super(props);
         this.handleMouseHover = this.handleMouseHover.bind(this);
         this.handleMouseUnHover = this.handleMouseUnHover.bind(this);
-        let selectedOption = null;
+        let selectedOptions = {};
         props.options.forEach(item => {
             if (item.active) {
-                selectedOption = item.value;
+                selectedOptions[item.id] = item;
             }
         })
         this.state = {
             count: 1,
-            selectedOption: selectedOption,
+            selectedOptions: selectedOptions,
             isHovering: false,
         };
     }
@@ -26,11 +26,10 @@ class MenuPosition extends React.Component {
     }
 
     addToCart(e) {
-        this.props.onAddToCart(e.target)
+        this.props.onAddToCart(e.target, this.state.selectedOptions)
     }
 
     handleMouseHover() {
-        console.log('hovering');
         this.setState({isHovering: true});
     }
 
@@ -42,11 +41,31 @@ class MenuPosition extends React.Component {
         this.setState((state, props) => ({focused: false}));
     }
 
-    render() {
-        let selectOption = (e, v) => {
-            this.setState((state, props) => ({selectedOption: v}));
-        }
+    getGroupedOptions() {
+        let groups = [];
+        this.props.options.forEach(  (optionValue) => {
+            if (!groups[optionValue.option_id]) {
+                let group = {"options": [], "name": ""};
+                this.props.optionGroups.forEach((optionGroupItem) => {
+                    if (optionGroupItem.id === optionValue.option_id) {
+                        group.name = optionGroupItem.name;
+                    }
+                })
+                groups[optionValue.option_id] = group;
+            }
 
+            groups[optionValue.option_id].options.push(optionValue);
+        })
+        return groups;
+    }
+
+    render() {
+        let onOptionSelect =  (e, id, v) => {
+            let options = this.state.selectedOptions;
+            options[id] = v;
+            this.setState((state, props) => ({selectedOptions: options}));
+            console.log(options);
+        }
         let imageClassName = 'menu-position__image ' + (this.props.reflected ? 'reflected' : '');
         let positionClassName = 'menu-position'
             + (this.props.reflected ? ' reflected' : '')
@@ -63,9 +82,13 @@ class MenuPosition extends React.Component {
                          onMouseLeave={this.handleMouseUnHover}>
                         <div className="menu-position__info_column__name">{this.props.name}</div>
                         <div className="menu-position__info_column__description">{this.props.description}</div>
-                        <OptionSelector options={this.props.options}
-                                        selectedOption={this.state.selectedOption}
-                                        onSelect={selectOption}/>
+                        {this.getGroupedOptions().map((optionGroup) => {
+                            return <OptionSelector optionGroup={optionGroup}
+                                                   key={optionGroup.name}
+                                                   selectedOption={this.state.selectedOption}
+                                                   onSelect={onOptionSelect}/>
+
+                        })}
                         <div className="menu-position__info_column__purchase">
                             <Button onClick={this.addToCart} text="Add"/>
                         </div>

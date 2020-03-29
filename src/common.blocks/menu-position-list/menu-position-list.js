@@ -15,12 +15,14 @@ class MenuPositionList extends React.Component {
                     if (i%2) {
                         return <MenuPosition {...item}
                                              key={i}
+                                             optionGroups={this.props.optionGroups}
                                              onAddToCart={this.props.onAddToCart}
                                              index={matrixPosition}
                                              reflected={reflected}/>;
                     } else {
                         return <MenuPositionLeft {...item}
                                                  key={i}
+                                                 optionGroups={this.props.optionGroups}
                                                  index={matrixPosition}
                                                  onAddToCart={this.props.onAddToCart}
                                                  reflected={reflected}/>;

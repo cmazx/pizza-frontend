@@ -10,7 +10,9 @@ class App extends React.Component {
         super(props);
         this.state = {
             apiEndpoint: "https://pizzario.herokuapp.com/api/v1",
+            cdnEndpoint: "https://mazx.ru/pizza",
             categories: [],
+            options: [{"id":1,"name":"Size"}],
             activeCategoryId: null,
             positions: [],
             positionsPage: 1
@@ -19,6 +21,7 @@ class App extends React.Component {
 
     componentDidMount() {
         this.fetchCategories();
+        this.fetchOptions();
         this.fetchPositions();
     }
 
@@ -32,8 +35,27 @@ class App extends React.Component {
         fetch(this.state.apiEndpoint + "/categories")
             .then(results => {
                 return results.json();
-            }).then(data => {
-            this.setState({'categories': data.data, 'activeCategoryId': data.data.length > 0 ? data.data[0].id : null});
+            })
+            .then(data => {
+                this.setState({
+                    'categories': data.data,
+                    'activeCategoryId': data.data.length > 0 ? data.data[0].id : null
+                });
+            }).catch(reason => {
+            console.log('Categories load failed ', reason);
+        })
+    }
+
+    fetchOptions() {
+        fetch(this.state.apiEndpoint + "/position-options")
+            .then(results => {
+                return results.json();
+            })
+            .then(data => {
+                this.setState({'options': data.data})
+                ;
+            }).catch(reason => {
+            console.log('Options load failed ', reason);
         })
     }
 
@@ -48,12 +70,15 @@ class App extends React.Component {
         fetch(url)
             .then(results => {
                 return results.json();
-            }).then(data => {
-            this.setState({'positions': data.data});
+            })
+            .then(data => {
+                this.setState({'positions': data.data});
+            }).catch(reason => {
+            console.log('Positions load failed ', reason);
         })
     }
 
-    onCategorySelect(e, value){
+    onCategorySelect(e, value) {
         console.log(value);
         this.setState((state, props) => ({activeCategoryId: value}));
     }
@@ -63,7 +88,7 @@ class App extends React.Component {
     }
 
     render() {
-        if(!this.state.activeCategoryId){
+        if (!this.state.activeCategoryId) {
             return "";
         }
 
@@ -72,16 +97,19 @@ class App extends React.Component {
                 <div className="App-container">
                     <div className="App-container__wrapper">
                         <div className="App-container__background-wrapper">
-                            <img src="/images/bg.jpg" className="App-container__background"/>
+                            <img src={this.state.cdnEndpoint + '/bg.jpg'} alt="" className="App-container__background"/>
                         </div>
                         <MenuCategoryList
-                            onSelect={(e,v)=>{this.onCategorySelect(e,v)}}
+                            onSelect={(e, v) => {
+                                this.onCategorySelect(e, v)
+                            }}
                             activeCategoryId={this.state.activeCategoryId}
                             items={this.state.categories}
                         />
                         <div className="App-container__position-list">
                             <MenuPositionList
                                 items={this.state.positions}
+                                optionGroups={this.state.options}
                                 onAddToCart={this.onAddToCart}
                             />
                         </div>
