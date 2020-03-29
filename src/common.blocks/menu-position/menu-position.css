@@ -3,8 +3,8 @@
     width: 536px;
     position: relative;
     background-color: white;
-    padding: 3px 2px;
-    height: 14vh;
+    padding: 2px 1px;
+    height: 175px;
 }
 .menu-position__button{
     border:1px solid silver;
@@ -66,18 +66,23 @@
     text-align: left;
     font-size: 20px;
 }
-
+.menu-position__image_non_pizza{
+    width:178px;
+}
 .menu-position__image{
     display: block;
-    margin-top: 24px;
-    margin-left: -176px;
-    width: 350px;
+    margin-top: 0;
+    margin-left: -180px;
+    width: 358px;
 }
-
-
+/* *magic* trick with images, we rotate pizza souce image to get slice of pizza without shadow*/
 .menu-position__image.reflected{
     margin-top: -180px;
-    margin-left: -174px;
+    margin-left: -180px;
+    transform: rotate(180deg);
+}
+.focused .menu-position__image.reflected{
+    transform: rotate(0deg);
 }
 
 .menu-position__info_column__description{
