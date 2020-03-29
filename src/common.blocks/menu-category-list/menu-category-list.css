@@ -1,0 +1,24 @@
+.menu-category-list{
+    margin-top: -80px;
+}
+
+.menu-category-list__wrapper{
+    font-size: calc(10px + 2vmin);
+    display: inline-block;
+    background-color: white;
+    border-radius: 5px;
+    padding:0px 5px;
+}
+
+.menu-category-list__item{
+    display: inline-block;
+    margin: 0px 10px;
+    cursor: pointer;
+    min-width: 100px;
+    color: #70544f;
+}
+
+
+ .menu-category-list__item.active,  .menu-category-list__item:hover{
+    color: #009471;
+}
