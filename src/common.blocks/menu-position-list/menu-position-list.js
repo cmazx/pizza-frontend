@@ -1,11 +1,12 @@
 import React from 'react';
 import './menu-position-list.css';
 import MenuPosition from "../menu-position/menu-position";
-import MenuPositionLeft from "../menu-position-left/menu-position-left";
+import MenuPositionLeft from "../menu-position/menu-position-left/menu-position-left";
 
 class MenuPositionList extends React.Component {
 
     render() {
+
         return (
             <div className="menu-position-list">
                 {this.props.items.map((item, i) => {
@@ -18,6 +19,7 @@ class MenuPositionList extends React.Component {
                                              optionGroups={this.props.optionGroups}
                                              onAddToCart={this.props.onAddToCart}
                                              index={matrixPosition}
+                                             pizzaPosition = {this.props.pizzaList}
                                              reflected={reflected}/>;
                     } else {
                         return <MenuPositionLeft {...item}
@@ -25,6 +27,7 @@ class MenuPositionList extends React.Component {
                                                  optionGroups={this.props.optionGroups}
                                                  index={matrixPosition}
                                                  onAddToCart={this.props.onAddToCart}
+                                                 pizzaPosition = {this.props.pizzaList}
                                                  reflected={reflected}/>;
                     }
                 })}

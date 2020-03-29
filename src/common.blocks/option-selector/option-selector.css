@@ -8,6 +8,7 @@
     padding:1px 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin: 0px 2px;
 }
 .active_selector{
     background-color: #009471;

@@ -12,7 +12,7 @@ class App extends React.Component {
             apiEndpoint: "https://pizzario.herokuapp.com/api/v1",
             cdnEndpoint: "https://mazx.ru/pizza",
             categories: [],
-            options: [{"id":1,"name":"Size"}],
+            options: [],
             activeCategoryId: null,
             positions: [],
             positionsPage: 1
@@ -79,7 +79,6 @@ class App extends React.Component {
     }
 
     onCategorySelect(e, value) {
-        console.log(value);
         this.setState((state, props) => ({activeCategoryId: value}));
     }
 
@@ -87,11 +86,19 @@ class App extends React.Component {
         console.log(e);
     }
 
+    activeCategoryAboutPizza() {
+        return this.state.categories.filter((cat) => {
+            if (this.state.activeCategoryId !== cat.id) {
+                return false;
+            }
+            return cat.name.toLowerCase() === 'pizza';
+        }).length > 0;
+    }
+
     render() {
         if (!this.state.activeCategoryId) {
             return "";
         }
-
         return (
             <div className="App">
                 <div className="App-container">
@@ -111,6 +118,7 @@ class App extends React.Component {
                                 items={this.state.positions}
                                 optionGroups={this.state.options}
                                 onAddToCart={this.onAddToCart}
+                                pizzaList={this.activeCategoryAboutPizza()}
                             />
                         </div>
                     </div>

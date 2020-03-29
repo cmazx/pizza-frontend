@@ -18,6 +18,7 @@ class MenuPosition extends React.Component {
             count: 1,
             selectedOptions: selectedOptions,
             isHovering: false,
+            componentClassName: 'menu-position',
         };
     }
 
@@ -43,15 +44,12 @@ class MenuPosition extends React.Component {
 
     getGroupedOptions() {
         let groups = [];
-        this.props.options.forEach(  (optionValue) => {
+        this.props.options.forEach((optionValue) => {
             if (!groups[optionValue.option_id]) {
-                let group = {"options": [], "name": ""};
-                this.props.optionGroups.forEach((optionGroupItem) => {
-                    if (optionGroupItem.id === optionValue.option_id) {
-                        group.name = optionGroupItem.name;
-                    }
-                })
-                groups[optionValue.option_id] = group;
+                let optionGroup = this.props.optionGroups
+                    .filter((group) => (group.id === optionValue.option_id))
+                    .shift();
+                groups[optionValue.option_id] = {"options": [], "name": optionGroup.name};
             }
 
             groups[optionValue.option_id].options.push(optionValue);
@@ -59,40 +57,55 @@ class MenuPosition extends React.Component {
         return groups;
     }
 
-    render() {
-        let onOptionSelect =  (e, id, v) => {
+    getImageClassName() {
+        return this.state.componentClassName + "__image"
+            + (this.props.pizzaPosition ? '' : '_non_pizza')
+            + (this.props.reflected ? ' reflected' : '')
+    }
+
+    renderImageColumn() {
+        return <div className={this.state.componentClassName + "__image_column"}>
+            <img className={this.getImageClassName()} alt="" src={this.props.image}/>
+        </div>;
+    }
+
+    renderInfoColumn() {
+        let onOptionSelect = (e, id, v) => {
             let options = this.state.selectedOptions;
             options[id] = v;
             this.setState((state, props) => ({selectedOptions: options}));
-            console.log(options);
         }
-        let imageClassName = 'menu-position__image ' + (this.props.reflected ? 'reflected' : '');
-        let positionClassName = 'menu-position'
+        return <div className={this.state.componentClassName + "__info_column"}
+                    onMouseEnter={this.handleMouseHover}
+                    onMouseLeave={this.handleMouseUnHover}>
+            <div className={this.state.componentClassName + "__info_column__name"}>{this.props.name}</div>
+            <div className={this.state.componentClassName + "__info_column__description"}
+            >{this.props.description}</div>
+            {this.getGroupedOptions().map((optionGroup) => {
+                return <OptionSelector optionGroup={optionGroup}
+                                       key={optionGroup.name}
+                                       selectedOption={this.state.selectedOption}
+                                       onSelect={onOptionSelect}/>
+
+            })}
+            <div className={this.state.componentClassName + "__info_column__purchase"}>
+                <Button onClick={this.addToCart} text="Add"/>
+            </div>
+        </div>
+    }
+
+    getPositionClassName() {
+        return this.state.componentClassName
             + (this.props.reflected ? ' reflected' : '')
             + (this.state.isHovering ? ' focused' : '');
+    }
 
+    render() {
         return (
-            <div className={positionClassName}>
-                <div className="menu-position__wrap">
-                    <div className="menu-position__image_column">
-                        <img className={imageClassName} alt="" src={this.props.image}/>
-                    </div>
-                    <div className="menu-position__info_column"
-                         onMouseEnter={this.handleMouseHover}
-                         onMouseLeave={this.handleMouseUnHover}>
-                        <div className="menu-position__info_column__name">{this.props.name}</div>
-                        <div className="menu-position__info_column__description">{this.props.description}</div>
-                        {this.getGroupedOptions().map((optionGroup) => {
-                            return <OptionSelector optionGroup={optionGroup}
-                                                   key={optionGroup.name}
-                                                   selectedOption={this.state.selectedOption}
-                                                   onSelect={onOptionSelect}/>
-
-                        })}
-                        <div className="menu-position__info_column__purchase">
-                            <Button onClick={this.addToCart} text="Add"/>
-                        </div>
-                    </div>
+            <div className={this.getPositionClassName()}>
+                <div className={this.state.componentClassName + "__wrap"}>
+                    {this.renderImageColumn()}
+                    {this.renderInfoColumn()}
                 </div>
             </div>
         );

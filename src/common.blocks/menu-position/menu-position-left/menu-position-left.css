@@ -3,8 +3,8 @@
     width: 536px;
     position: relative;
     background-color: white;
-    padding: 3px 2px;
-    height: 14vh;
+    padding: 2px 2px;
+    height: 175px;
 }
 .menu-position-left__button{
     border:1px solid silver;
@@ -64,18 +64,22 @@
     height: 15vh;
 }
 
-
+.menu-position-left__image_non_pizza{
+    width:178px;
+}
 
 .menu-position-left__image{
     display: block;
-    width: 350px;
-    margin-top: 24px;
-    margin-left: 14px;
+    width: 358px;
 }
 
 .menu-position-left__image.reflected{
-    margin-top: -181px;
-    margin-left: 14px;
+    margin-top: -180px;
+    transform: rotate(180deg);
+}
+.focused .menu-position-left__image.reflected{
+    margin-top: -180px;
+    transform: rotate(0deg);
 }
 
 .menu-position-left__info_column__description{
