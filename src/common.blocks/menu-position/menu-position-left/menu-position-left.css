@@ -88,11 +88,7 @@
     color:#bfb7b6;
     text-align:left;
 }
-/*
-.menu-position-left__info_column .button{
-    margin: 0;
-    margin-right: 9vw;
-}*/
+
 .menu-position-left__info_column .option-selector{
     text-align: right;
 }
@@ -107,8 +103,8 @@
     display: flex;
     flex-direction: column;
     width: 100px;
-    float: right;
-    margin-right: 2px;
+    margin-left: 2px;
+    margin-right: auto;
 }
 .menu-position-left__info_column__price{
     font-size: 20px;
