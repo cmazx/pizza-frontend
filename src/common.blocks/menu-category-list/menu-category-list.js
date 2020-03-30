@@ -15,7 +15,6 @@ class MenuCategoryList extends React.Component {
     }
 
     render() {
-        console.log("active category id",this.state.activeCategoryId);
         return (
             <div className="menu-category-list">
                 <div className="menu-category-list__wrapper">

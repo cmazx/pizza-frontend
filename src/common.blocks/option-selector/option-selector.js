@@ -4,24 +4,34 @@ import './option-selector.css';
 class OptionSelector extends React.Component {
     constructor(props) {
         super(props);
+        let selectedOption;
+        this.props.optionGroup.options.forEach((optionValue) => {
+                if (selectedOption === undefined) {
+                    selectedOption = optionValue;
+                }
+            }
+        );
         this.state = {
             count: 1,
-            selectedOption: props.selectedOption
+            selectedOption: selectedOption
         };
     }
 
+    componentDidMount() {
+        this.props.onSelect(this, this.state.selectedOption);
+    }
+
     onSelect(e, item) {
-        this.setState((state, props) => ({selectedOption: item.value}));
-        this.props.onSelect(e, item.option_id, item.value);
+        this.setState((state, props) => ({selectedOption: item}));
+        this.props.onSelect(e, item.option_id, item);
     }
 
     render() {
         return (
             <div className="option-selector">
-                <div className="option-selector__name">{this.props.optionGroup.name}</div>
                 {this.props.optionGroup.options.map(optionValue => (
                     <div onClick={(e) => this.onSelect(e, optionValue)} className={
-                        (this.state.selectedOption === optionValue.value)
+                        (this.state.selectedOption.value === optionValue.value)
                             ? 'option-selector__value active_selector'
                             : 'option-selector__value'
                     } key={optionValue.value}>{optionValue.value}</div>

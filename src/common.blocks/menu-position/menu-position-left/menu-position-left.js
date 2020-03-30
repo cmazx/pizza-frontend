@@ -7,29 +7,25 @@ class MenuPositionLeft extends MenuPosition {
         super(props);
         this.handleMouseHover = this.handleMouseHover.bind(this);
         this.handleMouseUnHover = this.handleMouseUnHover.bind(this);
-        let selectedOptions = {};
-        props.options.forEach(item => {
-            if (item.active) {
-                selectedOptions[item.id] = item;
-            }
-        })
+        this.renderInfoColumn = this.renderInfoColumn.bind(this);
+        this.addToCart = this.addToCart.bind(this);
+        this.onOptionSelect = this.onOptionSelect.bind(this);
         this.state = {
             count: 1,
-            selectedOptions: selectedOptions,
+            selectedOptions: props.selectedOptions,
             isHovering: false,
-            componentClassName: 'menu-position-left'
+            componentClassName: 'menu-position-left',
+            showImage: true,
         };
     }
 
     render() {
-        return (
-            <div className={this.getPositionClassName()}>
-                <div className={this.state.componentClassName + "__wrap"}>
-                    {this.renderInfoColumn()}
-                    {this.renderImageColumn()}
-                </div>
+        return <div className={this.getPositionClassName()}>
+            <div className={this.state.componentClassName + "__wrap"}>
+                {this.renderInfoColumn()}
+                {this.renderImageColumn()}
             </div>
-        );
+        </div>;
     }
 }
 

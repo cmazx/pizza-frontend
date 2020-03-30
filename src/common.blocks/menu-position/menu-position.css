@@ -38,7 +38,7 @@
     display: inline-block;
     flex-direction: column;
     vertical-align: top;
-    background: linear-gradient(to top right, white, white, white, #e6d5a4);
+    background: linear-gradient(to top right, white, white, white, #ffd2b2);
 }
 
 .menu-position.reflected{
@@ -54,11 +54,11 @@
 }
 .menu-position__info_column__description{
     padding-right:5px;
-    height:100px;
+    height:94px;
     overflow: hidden;
 }
 .menu-position__info_column .option-selector{
-   float:left;
+    width: 255px;
 }
 
 
@@ -104,6 +104,21 @@
     text-align: left;
 }
 
+.menu-position__info_column__bottom{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
 .menu-position__info_column__purchase{
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    float: right;
+    margin-right: 2px;
+}
+.menu-position__info_column__price{
+    font-size: 20px;
+    text-align: center;
+
 }

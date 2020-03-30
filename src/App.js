@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import MenuCategoryList from './common.blocks/menu-category-list/menu-category-list';
 import MenuPositionList from "./common.blocks/menu-position-list/menu-position-list";
+import Cart from "./common.blocks/cart/cart";
 
 
 class App extends React.Component {
@@ -15,8 +16,13 @@ class App extends React.Component {
             options: [],
             activeCategoryId: null,
             positions: [],
-            positionsPage: 1
+            positionsPage: 1,
+            cartPositions: []
         };
+
+        this.onAddToCart = this.onAddToCart.bind(this);
+        this.onOrderStart = this.onOrderStart.bind(this);
+        this.removeCartPosition = this.removeCartPosition.bind(this);
     }
 
     componentDidMount() {
@@ -82,8 +88,14 @@ class App extends React.Component {
         this.setState((state, props) => ({activeCategoryId: value}));
     }
 
-    onAddToCart(e) {
-        console.log(e);
+    onAddToCart(e, position, options) {
+        let positions = this.state.cartPositions;
+        positions.push({position: position, options: options});
+        this.setState((state, props) => ({cartPositions: positions}));
+    }
+
+    onOrderStart() {
+        console.log(this.state.cartPositions);
     }
 
     activeCategoryAboutPizza() {
@@ -95,12 +107,23 @@ class App extends React.Component {
         }).length > 0;
     }
 
+    removeCartPosition(i) {
+        let newList = this.state.cartPositions.filter((item,position) => {
+            return position !== i;
+        });
+        this.setState((state, props) => ({cartPositions: newList}));
+    }
+
     render() {
         if (!this.state.activeCategoryId) {
             return "";
         }
         return (
             <div className="App">
+                <Cart onClick={this.onOrderStart}
+                      optionsGroups={this.state.options}
+                      removePosition={this.removeCartPosition}
+                      positions={this.state.cartPositions}/>
                 <div className="App-container">
                     <div className="App-container__wrapper">
                         <div className="App-container__background-wrapper">
@@ -123,9 +146,6 @@ class App extends React.Component {
                         </div>
                     </div>
                 </div>
-                <footer>
-
-                </footer>
             </div>
         );
     }

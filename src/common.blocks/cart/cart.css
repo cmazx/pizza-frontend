@@ -1,0 +1,23 @@
+.cart{
+    position: fixed;
+    top: 0%;
+    z-index: 20000;
+    text-align: center;
+    width: 100%;
+}
+.cart__content{
+    background-color: white;
+    font-size: 16px;
+    display: inline-block;
+    border-radius: 0px 0px 10px 10px;
+    opacity: 0.9;
+}
+.cart__content__text{
+    padding: 5px 10px;
+}
+.cart__content__text__counter{
+    color:#009471;
+}
+.cart.hidden{
+    display:none;
+}
