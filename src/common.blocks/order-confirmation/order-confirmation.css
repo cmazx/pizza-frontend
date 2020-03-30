@@ -172,3 +172,22 @@
 .order-confirmation__list__count__decrementor.hidden, .order-confirmation__list__count__incrementor.hidden {
     opacity: 0;
 }
+.order-confirmation__totals_wrap{
+    display: flex;
+    flex-direction: row;
+}
+.order-confirmation__totals_label{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    white-space: nowrap;
+}
+.order-confirmation__totals_value{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: flex-start;
+    padding-left: 10px;
+    text-align: left;
+    white-space: nowrap;
+}

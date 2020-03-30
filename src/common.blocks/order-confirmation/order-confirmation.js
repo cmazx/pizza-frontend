@@ -14,6 +14,7 @@ class OrderConfirmation extends React.Component {
         this.renderOption = this.renderOption.bind(this);
         this.onConfirmOrder = this.onConfirmOrder.bind(this);
         this.isValid = this.isValid.bind(this);
+        this.calculateDeliveryCost = this.calculateDeliveryCost.bind(this);
     }
 
     openModal() {
@@ -39,7 +40,7 @@ class OrderConfirmation extends React.Component {
         return options
             .filter((option) => (option))
             .map((option) => {
-                let optionGroupName='';
+                let optionGroupName = '';
                 optionsGroups.forEach((item) => {
                         if (option.option_id === item.id) {
                             optionGroupName = item.name;
@@ -66,13 +67,29 @@ class OrderConfirmation extends React.Component {
         return (price * item.count);
     }
 
-    calculateTotals() {
+    calculateTotals(deliveryCost) {
         let total = 0;
         this.props.positions.forEach((item) => {
             total += this.calculateSubtotal(item);
         })
+        total += deliveryCost.EUR;
 
-        return {total: total.toFixed(2), totalUSD: (total * 1.11).toFixed(2)};
+        return {EUR: total, USD: (total * this.getEURUSDRate())};
+    }
+
+    getEURUSDRate() {
+        return 1.11;
+    }
+
+    calculateDeliveryCost() {
+        let cost = this.props.fixedDeliveryCost;
+        let count = 0;
+        this.props.positions.forEach((item) => {
+            count += item.count;
+        })
+        let additionalPackages = Math.ceil(count / 10) - 1;
+        cost += additionalPackages * this.props.additionalDeliveryCost
+        return {EUR: cost, USD: (cost * this.getEURUSDRate())};
     }
 
     removePosition(e, i) {
@@ -109,7 +126,8 @@ class OrderConfirmation extends React.Component {
     }
 
     render() {
-        let totals = this.calculateTotals();
+        let deliveryCost = this.calculateDeliveryCost();
+        let totals = this.calculateTotals(deliveryCost);
         return (
             <div>
                 <div onClick={this.openModal} className="order-confirmation__order_button">Make order</div>
@@ -163,10 +181,21 @@ class OrderConfirmation extends React.Component {
                             ))}
                         </div>
                         <hr/>
-                        <div>
-                            <b>Total:</b> <span>{totals.total} EUR</span> (<span>{totals.totalUSD} USD </span>)
+                        <div className="order-confirmation__totals_wrap">
+                            <div className="order-confirmation__totals_label">
+                                <div >Delivery charge:</div>
+                                <b>Total:</b>
+                            </div>
+                            <div className="order-confirmation__totals_value">
+                                    <span>{deliveryCost.EUR.toFixed(2)} EUR</span>
+                                    <span>{totals.EUR.toFixed(2)} EUR</span>
+                            </div>
+                            <div className="order-confirmation__totals_value">
+                                <span>({deliveryCost.USD.toFixed(2)} USD)</span>
+                                <span>({totals.USD.toFixed(2)} USD)</span>
+                            </div>
                         </div>
-                        <div>Only cash pay on delivery available.</div>
+                        <div>Currently only on-delivery cash payment accepted.</div>
                         <br/>
                         <div className="order-confirmation__contacts">
                             <h4>Please specify delivery information</h4>
