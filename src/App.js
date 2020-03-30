@@ -24,7 +24,8 @@ class App extends React.Component {
             lastOrderToken: "",
             modalVisible: false,
             modalContent: "",
-
+            additionalDeliveryCost: 1,//delivery cost for every 10 pizzas (after first 10)
+            fixedDeliveryCost: 5 //cost for delivery that always taken
         };
 
         this.onAddToCart = this.onAddToCart.bind(this);
@@ -257,6 +258,8 @@ class App extends React.Component {
                       onConfirmOrder={this.onConfirmOrder}
                       decrementPosition={this.decrementCartPosition}
                       incrementPosition={this.incrementCartPosition}
+                      fixedDeliveryCost={this.state.fixedDeliveryCost}
+                      additionalDeliveryCost={this.state.additionalDeliveryCost}
                       positions={this.state.cartPositions}/>
                 <div className="App-container">
                     <div className="App-container__wrapper">
@@ -276,6 +279,7 @@ class App extends React.Component {
                                 optionGroups={this.state.options}
                                 onAddToCart={this.onAddToCart}
                                 pizzaList={this.activeCategoryAboutPizza()}
+                                placeholderUrl={this.state.listItemPlaceholderUrl}
                             />
                         </div>
                     </div>

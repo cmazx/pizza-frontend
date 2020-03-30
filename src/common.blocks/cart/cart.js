@@ -50,6 +50,8 @@ class Cart extends React.Component {
                                    onConfirmOrder={this.onConfirmOrder}
                                    incrementPosition={this.props.incrementPosition}
                                    decrementPosition={this.props.decrementPosition}
+                                   fixedDeliveryCost={this.props.fixedDeliveryCost}
+                                   additionalDeliveryCost={this.props.additionalDeliveryCost}
                                    modalId="order-modal"/>
             </div>
 
