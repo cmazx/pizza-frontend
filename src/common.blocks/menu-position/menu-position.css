@@ -1,6 +1,6 @@
 .menu-position {
     display: block;
-    width: 536px;
+    width: 537px;
     position: relative;
     background-color: white;
     padding: 2px 1px;
@@ -47,7 +47,7 @@
 
 .menu-position__info_column{
     overflow: hidden;
-    width: 358px;
+    width: 359px;
     display: inline-block;
     flex-direction: column;
     vertical-align: top;
