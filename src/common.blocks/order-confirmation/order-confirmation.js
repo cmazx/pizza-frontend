@@ -39,16 +39,17 @@ class OrderConfirmation extends React.Component {
         return options
             .filter((option) => (option))
             .map((option) => {
-                let optionGroup;
+                let optionGroupName='';
                 optionsGroups.forEach((item) => {
                         if (option.option_id === item.id) {
-                            optionGroup = item;
+                            optionGroupName = item.name;
                         }
                     }
                 );
 
+
                 return <span key={'modal-span-' + option.option_id}>
-                    {optionGroup.name}: <span key={option.option_id + " " + option.value}>{option.value}</span></span>
+                    {optionGroupName}: <span key={option.option_id + " " + option.value}>{option.value}</span></span>
             });
     }
 

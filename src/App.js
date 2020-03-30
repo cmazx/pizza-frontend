@@ -13,16 +13,18 @@ class App extends React.Component {
         this.state = {
             apiEndpoint: "https://pizzario.herokuapp.com/api/v1",
             cdnEndpoint: "https://mazx.ru/pizza",
+            listItemPlaceholderUrl: "https://mazx.ru/pizza/pizzabg.jpg",
             categories: [],
             options: [],
             activeCategoryId: null,
             positions: [],
             positionsPage: 1,
-            cartPositions: this.getStoredCartPositions(),
+            cartPositions: [],
             orderCompleted: false,
             lastOrderToken: "",
             modalVisible: false,
             modalContent: "",
+
         };
 
         this.onAddToCart = this.onAddToCart.bind(this);
@@ -48,6 +50,7 @@ class App extends React.Component {
         this.fetchCategories();
         this.fetchOptions();
         this.fetchPositions();
+        this.setState({'cartPositions': this.getStoredCartPositions()});
     }
 
     componentDidUpdate(prevProps, prevState) {

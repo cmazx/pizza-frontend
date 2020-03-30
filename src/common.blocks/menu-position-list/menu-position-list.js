@@ -24,7 +24,16 @@ class MenuPositionList extends React.Component {
 
 
     render() {
-
+        let bgItems = [];
+        //items to fill gaps for pizza
+        if(this.props.pizzaList){
+            let bgItemsCount = this.props.items.length % 4;
+            bgItemsCount = bgItemsCount > 0 ? (4 - bgItemsCount) : 0;
+            for (let i = 0; i < bgItemsCount; i++) {
+                let matrixPosition = ((this.props.items.length + i + 1) % 4);
+                bgItems.push({'index': matrixPosition, 'reflected': (matrixPosition === 3) || (matrixPosition === 0)})
+            }
+        }
         return (
             <div className="menu-position-list">
                 {this.props.items.map((item, i) => {
@@ -52,6 +61,11 @@ class MenuPositionList extends React.Component {
                                                  groups={groupData.groups}
                                                  reflected={reflected}/>;
                     }
+                })}
+                {bgItems.map((item) => {
+                    return <div className={'positionPlaceholder index' + item.index + (item.reflected ? ' reflected' : '')}>
+                        <img src={this.props.placeholderUrl}/>
+                    </div>
                 })}
             </div>
         );
