@@ -101,7 +101,7 @@ class App extends React.Component {
                 return results.json();
             })
             .then(data => {
-                this.setState({'positions': data.data});
+                this.setState({'positions': data.data.slice(2)});
             }).catch(reason => {
             console.log('Positions load failed ', reason);
         })
